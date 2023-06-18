@@ -1,0 +1,36 @@
+1
+00:00:00,000 --> 00:00:05,000
+each other and run the applications together. So they're computers on a
+
+2
+00:00:05,000 --> 00:00:10,640
+network on an internal network connected to each other and they handle different
+
+3
+00:00:10,640 --> 00:00:17,360
+portions of the load. So this way we can simply scale up if we get more and more
+
+4
+00:00:17,360 --> 00:00:31,360
+requests then we can simply add more computers to our distributed system.
+
+
+1
+00:00:00,000 --> 00:00:06,240
+there is another massive advantage to this approach is that let's say that we
+
+2
+00:00:06,240 --> 00:00:11,480
+have one of these services running and it gets a lot of requests suddenly one
+
+3
+00:00:11,480 --> 00:00:17,720
+of these computers stops working what's gonna happen is all these other ones
+
+4
+00:00:17,720 --> 00:00:23,140
+automatically will find out that this computer is not active anymore so they
+
+5
+00:00:23,140 --> 00:00:30,120
+handle that the...

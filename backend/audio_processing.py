@@ -4,11 +4,8 @@ from pydub.utils import make_chunks
 import os
 import credentials
 
-#from dotenv import load_dotenv
+from dotenv import load_dotenv
 
-#openai.api_key = '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'
-#load_dotenv()
-#OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = credentials.OPENAI_API_KEY
 
 # Get the current directory path

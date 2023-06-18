@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 
+
 from video_processing import process_video
 from audio_processing import process_audio
 
@@ -20,9 +21,13 @@ import itertools
 import re
 import ffmpeg
 
+import openai
+
+from fastapi import Body
+
 app = FastAPI()
 
-# CORS middleware settings
+from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -230,3 +235,41 @@ async def upload_recording(file: UploadFile = File(...)):
     #audio_path = process_video(video_path)
     #transcript = process_audio(audio_path)
     #return {"filename": file.filename, "transcript": transcript}
+
+openai.api_key = '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'
+
+@app.get("/generate_questions")
+async def generate_questions():
+    with open('transcript_reduced.txt', 'r') as file:
+        transcript = file.read().replace('\n', '')
+    
+    # message = "\n\nHere is a document, based on its content, generate 3 thought provoking questions to reflect on the article: (answer in the language of the document)\n" + text
+
+    # Generate a response using ChatGPT
+    response = openai.ChatCompletion.create(
+        model="gpt-4-0613",
+        messages=[
+            {"role": "system", "content": "You are a knowledgable scholar."},
+            {"role": "user", "content": f"\n\nHere are parts of a transcript for video, the student seem to have difficulty understanding it, based on its content, generate a set of True/False questions to test his knowledge)\n{transcript}"},
+        ],
+    )
+    
+    questions = response.choices[0].message['content']
+    
+    return {"questions": questions}
+
+
+@app.post("/validate_answer")
+async def validate_answer(question: str = Body(...), answer: str = Body(...)):
+    prompt = f"{question}\nAnswer: {answer}\nIs this answer correct?"
+    response = openai.ChatCompletion.create(
+      engine="gpt-4-0613",
+      messages=[
+            {"role": "system", "content": "You are a knowledgable scholar."},
+            {"role": "user", "content": f"\n\nIs this answer correct?\n{prompt}"},
+        ],
+    )
+    
+    validation = response.choices[0].message['content']
+    
+    return {"validation": validation}
