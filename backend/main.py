@@ -2,6 +2,8 @@ from fastapi import FastAPI, UploadFile, File
 from aiohttp import ClientSession
 from fastapi.middleware.cors import CORSMiddleware
 import io
+import moviepy.editor as mp
+
 
 import numpy as np
 from pydub import AudioSegment
@@ -23,36 +25,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-@app.post("/uploadaudio")
-async def upload_audio(audio: UploadFile):
-    # print(audio)
-    # # read the uploaded file
-    # audio_bytes = await audio.read()
+@app.post("/uploadvideo")
+async def upload_video(video: UploadFile):
 
-    # # convert the bytes to a stream
-    # audio_stream = io.BytesIO(audio_bytes)
+    print(video.filename)
+
+    # CONVERT VIDEO TO AUDIO:
+    my_clip = mp.VideoFileClip(video)
+    my_clip.audio.write_audiofile(r"video_transcript.wav")
+
+    # LOCATE SAVED AUDIO
+
+    # USE WHISPER TO GET TRANSCRIPT OF AUDIO
+
+    # SAVE TRANSCRIPT
     
-    # # load the audio file
-    # audio = AudioSegment.from_file(audio_stream)
-
-    # # convert to mono and 8000 Hz sample rate
-    # audio = audio.set_channels(1).set_frame_rate(8000)
-
-    # # get the raw audio data as a bytestring
-    # raw_data = audio.raw_data
-
-    # # convert the raw audio data to Int16 format
-    # audio_data = np.frombuffer(raw_data, dtype=np.int16)
-
-    # # convert the audio data to little endian byte order
-    # audio_data = audio_data.astype('<i2')
-
-    # # convert back to bytes
-    # audio_bytes = audio_data.tobytes()
-
-    # now you can do something with the processed audio_bytes
-
-    return {"filename": audio.filename}
+    return {"filename": video.filename}
 '''
 @app.post("/transcribe/")
 async def transcribe_audio(audio: UploadFile = File(...)):
@@ -74,3 +62,4 @@ async def transcribe_audio(audio: UploadFile = File(...)):
 
     return {"transcription": result}
 '''
+
