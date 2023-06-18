@@ -6,7 +6,7 @@ import os
 
 from dotenv import load_dotenv
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 # Get the current directory path
 current_directory = os.getcwd()

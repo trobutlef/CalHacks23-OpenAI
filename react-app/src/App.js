@@ -11,6 +11,9 @@ import {
   ThemeProvider,
 } from "@mui/material";
 
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+
 const theme = createTheme({
   palette: {
     background: {
@@ -18,8 +21,6 @@ const theme = createTheme({
     },
   },
 });
-import axios from 'axios';
-import { useState, useEffect } from 'react';
 
 function App() {
   const [questions, setQuestions] = useState([]);
@@ -38,8 +39,11 @@ function App() {
     axios.post('http://localhost:8000/validate_answer', {
       question: currentQuestion,
       answer: answer
+    }, {
+      withCredentials: true,
     })
     .then(response => {
+      console.log(response.data.validation)
       if (response.data.validation.includes("correct")) {
         alert("Your answer is correct!");
       } else {
@@ -63,10 +67,16 @@ function App() {
               <GetTimeStamps />
             </Grid>
           </Grid>
+          <h1>{currentQuestion}</h1>
+          <input type="text" value={answer} onChange={e => setAnswer(e.target.value)} />
+          <button onClick={handleSubmit}>Submit</button>
         </Box>
+        
       </Container>
     </ThemeProvider>
+    
   );
 }
 
 export default App;
+

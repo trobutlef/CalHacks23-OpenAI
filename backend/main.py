@@ -25,12 +25,19 @@ import openai
 
 from fastapi import Body
 
-app = FastAPI()
 
 from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+origins = [
+    "http://localhost:3000",  # React app
+    "http://localhost:8000",  # FastAPI server
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
@@ -237,7 +244,7 @@ async def upload_recording(file: UploadFile = File(...)):
     #transcript = process_audio(audio_path)
     #return {"filename": file.filename, "transcript": transcript}
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 @app.get("/generate_questions")
 async def generate_questions():
@@ -264,7 +271,7 @@ async def generate_questions():
 async def validate_answer(question: str = Body(...), answer: str = Body(...)):
     prompt = f"{question}\nAnswer: {answer}\nIs this answer correct?"
     response = openai.ChatCompletion.create(
-      engine="gpt-4-0613",
+      model="gpt-4-0613",
       messages=[
             {"role": "system", "content": "You are a knowledgable scholar."},
             {"role": "user", "content": f"\n\nIs this answer correct?\n{prompt}"},

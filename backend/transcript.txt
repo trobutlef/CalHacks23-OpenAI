@@ -36,25 +36,20 @@ There are people who are trying to access these services.
 So there is one big problem.
 
 6
-<<<<<<< HEAD
-<<<<<<< HEAD
-00:00:20,880 --> 00:00:32,440
+00:00:20,880 --> 00:00:30,880
 If you want to serve that many people at the same time with one service, you have to have
 
 7
-00:00:32,440 --> 00:00:35,440
+00:00:30,880 --> 00:00:33,880
 a lot of people.
-=======
-00:00:20,880 --> 00:00:36,920
-=======
-00:00:20,880 --> 00:00:32,360
->>>>>>> 3fdf5293c2355778c59c7828ea20723a5e50f810
-If you want to serve that many people at the same time with one service, you have to have
->>>>>>> ab60e48f4b9431d2d281699e39ce908772c61b38
 
-7
-00:00:32,360 --> 00:00:35,360
-a lot of people.
+8
+00:00:33,880 --> 00:00:40,880
+And if you want to serve that many people at the same time with one service, you have
+
+9
+00:00:40,880 --> 00:00:43,880
+to have a lot of people.
 
 
 1
@@ -70,17 +65,8 @@ everyone at the same time. So if we actually consider for example these services
 on the internet and we get lots of requests coming in like this. This could be like millions
 
 4
-<<<<<<< HEAD
-00:00:22,160 --> 00:00:25,240
-and millions of requests
-=======
 00:00:22,160 --> 00:00:29,160
-<<<<<<< HEAD
-and millions of requests or millions of requests over the internet but a smartphone a desktop
->>>>>>> ab60e48f4b9431d2d281699e39ce908772c61b38
-=======
-and millions of requests, millions and millions of requests.
->>>>>>> 3fdf5293c2355778c59c7828ea20723a5e50f810
+and millions of requests. We can actually build a computer that can
 
 
 1
@@ -159,18 +145,8 @@ of these computers stops working what's gonna happen is all these other ones
 automatically will find out that this computer is not active anymore so they
 
 5
-<<<<<<< HEAD
-<<<<<<< HEAD
-00:00:23,140 --> 00:00:30,140
-handle that bank
-=======
-00:00:23,140 --> 00:00:32,820
-handle that particular request
->>>>>>> ab60e48f4b9431d2d281699e39ce908772c61b38
-=======
-00:00:23,140 --> 00:00:27,580
-handle that the computer
->>>>>>> 3fdf5293c2355778c59c7828ea20723a5e50f810
+00:00:23,140 --> 00:00:30,600
+handle that committee
 
 
 1
