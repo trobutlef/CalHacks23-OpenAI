@@ -5,8 +5,14 @@ from fastapi.staticfiles import StaticFiles
 from video_processing import process_video
 from audio_processing import process_audio
 
+from hume import HumeBatchClient
+from hume.models.config import FaceConfig
+
 import os
 import json
+import credentials
+
+import re
 
 app = FastAPI()
 
@@ -23,16 +29,55 @@ async def upload_video(file: UploadFile = File(...)):
     return {"filename": file.filename, "transcript": transcript}
 
 @app.post("/getTimestamps/")
-async def get_timestamps(hume_json): #takes in a JSON object: output from Hume Batch API
+async def get_timestamps():
+
+    print("getting timestamps...")
+
+    # call Hume's Facial Recognition API with a local video file, to get a json file downloaded
+    '''
+    client = HumeBatchClient(credentials.HUME_API_KEY)
+    urls = []
+    config = FaceConfig()
+    job = client.submit_job(urls, [config], files=["/Users/zztee/CalHacks23-OpenAI/backend/videos/hume_test.mov"])
+
+    print(job)
+    print("Running...")
+
+    details = job.await_complete()
+    job.download_predictions("predictions.json")
+    print("Predictions downloaded to predictions.json")
+
+    '''
+    # read downloaded JSON file
+    with open('predictions.json') as user_file:
+        hume_json = user_file.read()
+
+    # transform JSON into Python object
+    a_list = json.loads(hume_json)
+
+    print("a_list created")
 
     # Parse to get inner JSONs that we need to filter through
-    a_list = json.loads(hume_json["results"]["predictions"][0]["models"]["face"]["grouped_predictions"][0]["predictions"])
+    b_list = a_list[0]["results"]["predictions"][0]["models"]["face"]["grouped_predictions"][0]["predictions"]
+
+    print("b_list created!")
 
     # Filtering through to get relevant frames based on emotion name and score:
+
+    def filter_func(predictions_json):
+        result = False 
+
+        for i in range(len(predictions_json["emotions"])):
+            if predictions_json["emotions"][i]["name"] in ["Anxiety","Confusion","Disappointment","Distress","Doubt","Surprise (negative)"] and predictions_json["emotions"][i]["score"] >= 0.8:
+                result = True
+        
+        return result
+
     filtered_list = list(
         filter(
-            lambda dictionary: (dictionary['emotions']['name'] in ["Anxiety","Confusion","Disappointment","Distress","Doubt","Surprise (negative)"] and dictionary['emotions']['score'] > 0.8),
-            a_list
+            filter_func,
+            # lambda dictionary: (dictionary['emotions']['name'] in ["Anxiety","Confusion","Disappointment","Distress","Doubt","Surprise (negative)"] and dictionary['emotions']['score'] > 0.8),
+            b_list
         )
     )
     # filtered_list is a list of JSON objects for each corresponding frame
@@ -41,3 +86,12 @@ async def get_timestamps(hume_json): #takes in a JSON object: output from Hume B
 
     for obj in filtered_list:
         timestamp_list.append(obj["time"])
+
+    print("timestamp_list: ", timestamp_list)
+
+    return timestamp_list
+
+    # Get transcript
+
+
+    # Get timestamp_list
