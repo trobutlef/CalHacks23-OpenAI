@@ -45,7 +45,7 @@ function App() {
     .then(response => {
       console.log(response.data.validation)
       if (response.data.validation.includes("correct")) {
-        alert("Your answer is correct!");
+        alert("Your answer is correct!"+ response.data.validation);
       } else {
         alert("Your answer is incorrect. " + response.data.validation);
       }

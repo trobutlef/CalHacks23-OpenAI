@@ -243,7 +243,7 @@ async def upload_recording(file: UploadFile = File(...)):
     #transcript = process_audio(audio_path)
     #return {"filename": file.filename, "transcript": transcript}
 
-openai.api_key = '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'
+openai.api_key = 'sk-VkruRhbsDhZTJ8NgFM4YT3BlbkFJvzysIPK8GlZC9Qj8XQXt0'
 
 @app.get("/generate_questions")
 async def generate_questions():
@@ -273,7 +273,7 @@ async def validate_answer(question: str = Body(...), answer: str = Body(...)):
       model="gpt-4-0613",
       messages=[
             {"role": "system", "content": "You are a knowledgable scholar."},
-            {"role": "user", "content": f"\n\nIs this answer correct?\n{prompt}"},
+            {"role": "user", "content": f"\n\nIs this answer correct? Give me additional information of this topic to help me understand it more!\n{prompt}"},
         ],
     )
     
