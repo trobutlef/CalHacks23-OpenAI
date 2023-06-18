@@ -9,7 +9,7 @@ from pydub import AudioSegment
 import os
 
 app = FastAPI()
-#OPENAI_API_KEY = os.getenv("isk-O0pMhXMushdl6VZ4OqpLT3BlbkFJNIhHxeivBY1qakf2DwiF")  # your OpenAI API Key
+OPENAI_API_KEY = os.getenv("isk-O0pMhXMushdl6VZ4OqpLT3BlbkFJNIhHxeivBY1qakf2DwiF")  # your OpenAI API Key
 
 origins = [
     "http://localhost:3000",  # React app address
@@ -24,38 +24,43 @@ app.add_middleware(
     allow_headers=["*"],
 )
 @app.post("/uploadaudio")
-async def upload_audio(audio: UploadFile):
-    # print(audio)
-    # # read the uploaded file
-    # audio_bytes = await audio.read()
+async def upload_audio(audio: UploadFile = File(...)):
+    # Get the filename before converting to an AudioSegment
+    filename = audio.filename
 
-    # # convert the bytes to a stream
-    # audio_stream = io.BytesIO(audio_bytes)
+    # read the uploaded file
+    audio_bytes = await audio.read()
+
+    # convert the bytes to a stream
+    audio_stream = io.BytesIO(audio_bytes)
     
-    # # load the audio file
-    # audio = AudioSegment.from_file(audio_stream)
+    # load the audio file
+    audio = AudioSegment.from_file(audio_stream)
 
-    # # convert to mono and 8000 Hz sample rate
-    # audio = audio.set_channels(1).set_frame_rate(8000)
+    # convert to mono and 8000 Hz sample rate
+    audio = audio.set_channels(1).set_frame_rate(8000)
 
-    # # get the raw audio data as a bytestring
-    # raw_data = audio.raw_data
+    # get the raw audio data as a bytestring
+    raw_data = audio.raw_data
 
-    # # convert the raw audio data to Int16 format
-    # audio_data = np.frombuffer(raw_data, dtype=np.int16)
+    # convert the raw audio data to Int16 format
+    audio_data = np.frombuffer(raw_data, dtype=np.int16)
 
-    # # convert the audio data to little endian byte order
-    # audio_data = audio_data.astype('<i2')
+    # convert the audio data to little endian byte order
+    audio_data = audio_data.astype('<i2')
 
-    # # convert back to bytes
-    # audio_bytes = audio_data.tobytes()
+    # convert back to bytes
+    audio_bytes = audio_data.tobytes()
 
-    # now you can do something with the processed audio_bytes
+    # Save the audio file to the local filesystem
+    with open(f"test/{filename}", "wb") as f:
+        f.write(audio_bytes)
 
-    return {"filename": audio.filename}
-'''
-@app.post("/transcribe/")
-async def transcribe_audio(audio: UploadFile = File(...)):
+    return {"filename": filename}
+
+
+@app.post("/transcribe")
+async def transcribe_audio(audio: UploadFile):
     # read the uploaded file
     audio_bytes = await audio.read()
     
@@ -71,6 +76,5 @@ async def transcribe_audio(audio: UploadFile = File(...)):
         )
         response.raise_for_status()
         result = await response.json()
-
+        print(result)
     return {"transcription": result}
-'''
