@@ -1,11 +1,14 @@
 from fastapi import FastAPI, UploadFile, File
 
+from fastapi.staticfiles import StaticFiles
 from video_processing import process_video
 from audio_processing import process_audio
 
 import os
 
 app = FastAPI()
+
+app.mount("/videos", StaticFiles(directory="videos"), name="videos")
 
 @app.post("/uploadvideo/")
 async def upload_video(file: UploadFile = File(...)):
