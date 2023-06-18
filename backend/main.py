@@ -54,16 +54,16 @@ async def get_upload_video():
 
 
 @app.post("/getTimestamps/")
-async def get_timestamps():
+async def get_timestamps(filename):
 
     print("getting timestamps...")
 
     # call Hume's Facial Recognition API with a local video file, to get a json file downloaded
-    '''
+    
     client = HumeBatchClient(credentials.HUME_API_KEY)
     urls = []
     config = FaceConfig()
-    job = client.submit_job(urls, [config], files=["/Users/zztee/CalHacks23-OpenAI/backend/videos/hume_test.mov"])
+    job = client.submit_job(urls, [config], files=[filename])
 
     print(job)
     print("Running...")
@@ -72,7 +72,7 @@ async def get_timestamps():
     job.download_predictions("predictions.json")
     print("Predictions downloaded to predictions.json")
 
-    '''
+    
     # read downloaded JSON file
     with open('predictions.json') as user_file:
         hume_json = user_file.read()
@@ -221,6 +221,7 @@ async def upload_recording(file: UploadFile = File(...)):
     # Process the mp4 file
     #audio_path = process_video(mp4_path)
     #transcript = process_audio(audio_path)
+    get_timestamps(file.filename)
     return {"filename": file.filename}#, "transcript": transcript}
     #current_dir = os.path.dirname(os.path.realpath(__file__))
     #video_path = os.path.join(current_dir, "recording", file.filename)
