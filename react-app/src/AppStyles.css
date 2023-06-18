@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Commissioner&display=swap");
+
+:root {
+  --fontFamily: "Commissioner", sans-serif;
+  --border-radius: 20px;
+  --grad-one: linear-gradient(#c75600, #f88d35);
+  --grad-two: linear-gradient(#96153e, #e02341);
+  --layout-width: 350px;
+}
+
+body {
+  margin: 20px auto;
+  background: #242934;
+  font-family: var(--fontFamily);
+}
+
+.nav {
+  width: var(--layout-width);
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.nav button {
+  border: none;
+  background: #111122;
+  color: white;
+  font-size: 0.9em;
+  padding: 0.8em 1.2em;
+  border-radius: var(--border-radius);
+  margin: 1em 5px;
+  opacity: 0.85;
+  transition: all 0.25s;
+  cursor: pointer;
+}
+
+.nav button:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.nav button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: translateY(0px);
+}
+
+.nav button:focus {
+  outline: none;
+}
+
+.cardNumber {
+  color: white;
+  display: flex;
+  justify-content: center;
+}
