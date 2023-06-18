@@ -1,0 +1,19 @@
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.upload-label {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.upload-input {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}

@@ -1,5 +1,7 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 from video_processing import process_video
@@ -8,9 +10,13 @@ from audio_processing import process_audio
 from hume import HumeBatchClient
 from hume.models.config import FaceConfig
 
+from datetime import timedelta
+
 import os
 import json
 import credentials
+
+import itertools
 
 import re
 import ffmpeg
@@ -31,17 +37,25 @@ app.add_middleware(
 )
 
 app.mount("/videos", StaticFiles(directory="videos"), name="videos")
+# Assume last_uploaded_filename is a global variable to store the last uploaded file name
+last_uploaded_filename = None
 
 @app.post("/uploadvideo/")
 async def upload_video(file: UploadFile = File(...)):
+    global last_uploaded_filename
     current_dir = os.path.dirname(os.path.realpath(__file__))
     video_path = os.path.join(current_dir, "videos", file.filename)
     with open(video_path, "wb") as buffer:
         buffer.write(await file.read())
     audio_path = process_video(video_path)
     transcript = process_audio(audio_path)
+    last_uploaded_filename = file.filename  # Update last uploaded file name
     return {"filename": file.filename, "transcript": transcript}
 
+@app.get("/getuploadedvideo/")  # Add a get endpoint for uploadvideo
+async def get_upload_video():
+    global last_uploaded_filename
+    return {"filename": last_uploaded_filename}
 @app.post("/getTimestamps/")
 async def get_timestamps():
 
@@ -103,14 +117,95 @@ async def get_timestamps():
 
     print("timestamp_list: ", timestamp_list)
 
+    # Get transcript
+    with open("transcript.txt") as file:
+        data = file.read().split('\n')
+
+    # Filter out random integers and blank spaces:
+    data[:] = [x for x in data if (x != '' and len(x)>10)]
+
+    # Split into timestamps and content:
+    t1,t2 = itertools.tee(data)
+    even = itertools.islice(t1,0,None,2)
+    odd = itertools.islice(t2,1,None,2)
+    timestamps = list(even)
+    content = list(odd)
+    # Handle weird exception:
+    last_timestamps = timestamps.pop()
+    last_content = content.pop()
+    content.append(last_timestamps)
+    timestamps.append(last_content)
+
+    print("list of timestamps: ", timestamps)
+
+    print("list of content: ", content)
+
+    # regex pattern for transcript's timestamps:
+    pattern = r'(\d{2}:\d{2}:\d{2},\d{3})\s-->\s(\d{2}:\d{2}:\d{2},\d{3})'
+
+    # start of timestamps''00:00:00,000'
+    init_timestr = re.search(pattern, timestamps[0]).group(1)[:-4]
+    h, m, s = init_timestr.split(':')
+    init_timesec = int(h) * 3600 + int(m) * 60 + int(s)
+    timestamps_edited = [init_timesec]
+
+    # Convert timestamps into seconds
+    for i in range(1,len(timestamps)):
+        match = re.search(pattern, timestamps[i])
+
+        start_time = match.group(1)[:-4]
+        sh, sm, ss = start_time.split(':')
+        start_timesec = int(sh) * 3600 + int(sm) * 60 + int(ss)
+        
+        end_time = match.group(2)[:-4]
+        eh, em, es = end_time.split(':')
+        end_timesec = int(eh) * 3600 + int(em) * 60 + int(es)
+
+        time_diffsec = end_timesec - start_timesec
+
+        prev_time = timestamps_edited[i-1]
+        timestamps_edited.append(time_diffsec+ prev_time)
+
+    print(timestamps_edited)
+
+    # Combine timestamps list and content list into a dictionary:
+    initial_dict = dict(zip(timestamps_edited, content))
+
+    print(initial_dict)
+
+    # Get final dictionary for shortened transcript:
+    result_dict = {}
+    for time in timestamp_list:
+        go_on = True
+        i=0
+        while go_on:
+            keys = list(initial_dict.keys())
+            if time >= keys[i]:
+                i+=1
+
+            else:
+                result_dict[keys[i-1]] = initial_dict[keys[i-1]]
+                result_dict[keys[i]] = initial_dict[keys[i]]
+                result_dict[keys[i+1]] = initial_dict[keys[i+1]]
+                go_on = False
+
+    print(result_dict)
+
+    # Write to a txt file and save it
+    with open('transcript_short.txt', 'w') as f:
+        for key, value in result_dict.items():
+            # create timedelta and convert it into string
+            td_str = str(timedelta(seconds=key)) + ":"
+            f.write('\n')
+            f.write(td_str)
+            f.write('\n')
+            f.write(value)
+    
+    f.close()
+
     return timestamp_list
 
-    # Get transcript
 
-
-    # Get timestamp_list
-
-    
 @app.post("/uploadrecording/")
 async def upload_recording(file: UploadFile = File(...)):
     current_dir = os.path.dirname(os.path.realpath(__file__))

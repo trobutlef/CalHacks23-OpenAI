@@ -1,14 +1,47 @@
-import React from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/system";
+import VideoPlayer from "./VideoPlayer";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  createTheme,
+  ThemeProvider,
+} from "@mui/material";
+
+const Input = styled("input")({
+  display: "none",
+});
+
+const TranscriptionBox = styled(Box)({
+  border: "1px solid #c4c4c4",
+  borderRadius: "8px",
+  padding: "16px",
+  height: "300px",
+  overflow: "auto",
+  whiteSpace: "pre-wrap",
+  marginTop: "16px",
+});
 
 function VideoUpload() {
+  const [transcription, setTranscription] = useState(null);
+
   const uploadVideo = (event) => {
     const file = event.target.files[0];
+
     const formData = new FormData();
-    formData.append('file', file);
-    axios.post('http://localhost:8000/uploadvideo/', formData)
-    .then((response) => {
-        console.log(response); // Here you get the response from your backend
+    formData.append("file", file);
+    axios
+      .post("http://localhost:8000/uploadvideo/", formData, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response);
+        setTranscription(response.data.transcript); // Assuming transcript is returned in response data
       })
       .catch((error) => {
         console.error("Error uploading file: ", error);
@@ -16,9 +49,35 @@ function VideoUpload() {
   };
 
   return (
-    <div>
-      <input type="file" onChange={uploadVideo} />
-    </div>
+    <Stack
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      spacing={2}
+    >
+      <label htmlFor="contained-button-file">
+        <Input
+          accept="video/*"
+          id="contained-button-file"
+          type="file"
+          onChange={uploadVideo}
+        />
+        <Button variant="contained" component="span">
+          Upload
+        </Button>
+      </label>
+
+      <Grid item xs={12} sm={8}>
+        <VideoPlayer />
+      </Grid>
+
+      <Typography variant="subtitle1">Transcription:</Typography>
+      <TranscriptionBox>
+        {transcription
+          ? transcription
+          : "Upload the video to see the transcription."}
+      </TranscriptionBox>
+    </Stack>
   );
 }
 
