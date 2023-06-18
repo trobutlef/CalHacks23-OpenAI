@@ -2,6 +2,7 @@ import openai
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 import os
+#import credentials
 
 #from dotenv import load_dotenv
 

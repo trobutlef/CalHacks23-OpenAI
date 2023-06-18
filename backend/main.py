@@ -22,7 +22,7 @@ async def upload_video(file: UploadFile = File(...)):
     return {"filename": file.filename, "transcript": transcript}
 
 @app.post("/uploadrecording/")
-async def upload_video(file: UploadFile = File(...)):
+async def upload_recording(file: UploadFile = File(...)):
     current_dir = os.path.dirname(os.path.realpath(__file__))
     recording_path = os.path.join(current_dir, "recording", file.filename)
 
@@ -46,4 +46,3 @@ async def upload_video(file: UploadFile = File(...)):
     #audio_path = process_video(video_path)
     #transcript = process_audio(audio_path)
     #return {"filename": file.filename, "transcript": transcript}
-
