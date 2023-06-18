@@ -243,7 +243,7 @@ async def upload_recording(file: UploadFile = File(...)):
     #transcript = process_audio(audio_path)
     #return {"filename": file.filename, "transcript": transcript}
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 @app.get("/generate_questions")
 async def generate_questions():
