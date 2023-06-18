@@ -37,24 +37,36 @@ So there is one big problem.
 
 6
 <<<<<<< HEAD
+00:00:20,880 --> 00:00:30,880
+=======
+<<<<<<< HEAD
+00:00:20,880 --> 00:00:31,800
+If you want to serve that many people at the same time with one service...
+=======
+<<<<<<< HEAD
 <<<<<<< HEAD
 00:00:20,880 --> 00:00:32,440
+>>>>>>> 05938703792963feec9e36adccdc9b75b4778af0
 If you want to serve that many people at the same time with one service, you have to have
 
 7
-00:00:32,440 --> 00:00:35,440
+00:00:30,880 --> 00:00:33,880
 a lot of people.
-=======
-00:00:20,880 --> 00:00:36,920
-=======
-00:00:20,880 --> 00:00:32,360
->>>>>>> 3fdf5293c2355778c59c7828ea20723a5e50f810
-If you want to serve that many people at the same time with one service, you have to have
->>>>>>> ab60e48f4b9431d2d281699e39ce908772c61b38
 
+<<<<<<< HEAD
+8
+00:00:33,880 --> 00:00:40,880
+And if you want to serve that many people at the same time with one service, you have
+
+9
+00:00:40,880 --> 00:00:43,880
+to have a lot of people.
+=======
 7
 00:00:32,360 --> 00:00:35,360
 a lot of people.
+>>>>>>> 128d2b019bb36a3f3ed9b01d94c892c8a6e0c2fd
+>>>>>>> 05938703792963feec9e36adccdc9b75b4778af0
 
 
 1
@@ -70,17 +82,21 @@ everyone at the same time. So if we actually consider for example these services
 on the internet and we get lots of requests coming in like this. This could be like millions
 
 4
-<<<<<<< HEAD
-00:00:22,160 --> 00:00:25,240
-and millions of requests
-=======
 00:00:22,160 --> 00:00:29,160
+<<<<<<< HEAD
+and millions of requests. We can actually build a computer that can
+=======
+<<<<<<< HEAD
+and millions of requests for like, mundane tasks on powerful phones to help them do things
+=======
 <<<<<<< HEAD
 and millions of requests or millions of requests over the internet but a smartphone a desktop
 >>>>>>> ab60e48f4b9431d2d281699e39ce908772c61b38
 =======
 and millions of requests, millions and millions of requests.
 >>>>>>> 3fdf5293c2355778c59c7828ea20723a5e50f810
+>>>>>>> 128d2b019bb36a3f3ed9b01d94c892c8a6e0c2fd
+>>>>>>> 05938703792963feec9e36adccdc9b75b4778af0
 
 
 1
@@ -160,6 +176,14 @@ automatically will find out that this computer is not active anymore so they
 
 5
 <<<<<<< HEAD
+00:00:23,140 --> 00:00:30,600
+handle that committee
+=======
+<<<<<<< HEAD
+00:00:23,140 --> 00:00:32,400
+handle the data
+=======
+<<<<<<< HEAD
 <<<<<<< HEAD
 00:00:23,140 --> 00:00:30,140
 handle that bank
@@ -171,6 +195,8 @@ handle that particular request
 00:00:23,140 --> 00:00:27,580
 handle that the computer
 >>>>>>> 3fdf5293c2355778c59c7828ea20723a5e50f810
+>>>>>>> 128d2b019bb36a3f3ed9b01d94c892c8a6e0c2fd
+>>>>>>> 05938703792963feec9e36adccdc9b75b4778af0
 
 
 1

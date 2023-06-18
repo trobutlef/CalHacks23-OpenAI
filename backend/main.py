@@ -25,12 +25,19 @@ import openai
 
 from fastapi import Body
 
-app = FastAPI()
 
 from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+origins = [
+    "http://localhost:3000",  # React app
+    "http://localhost:8000",  # FastAPI server
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
@@ -56,17 +63,19 @@ async def upload_video(file: UploadFile = File(...)):
 async def get_upload_video():
     global last_uploaded_filename
     return {"filename": last_uploaded_filename}
+
+
 @app.post("/getTimestamps/")
-async def get_timestamps():
+async def get_timestamps(filename):
 
     print("getting timestamps...")
 
     # call Hume's Facial Recognition API with a local video file, to get a json file downloaded
-    '''
+    
     client = HumeBatchClient(credentials.HUME_API_KEY)
     urls = []
     config = FaceConfig()
-    job = client.submit_job(urls, [config], files=["/Users/zztee/CalHacks23-OpenAI/backend/videos/hume_test.mov"])
+    job = client.submit_job(urls, [config], files=[filename])
 
     print(job)
     print("Running...")
@@ -75,7 +84,7 @@ async def get_timestamps():
     job.download_predictions("predictions.json")
     print("Predictions downloaded to predictions.json")
 
-    '''
+    
     # read downloaded JSON file
     with open('predictions.json') as user_file:
         hume_json = user_file.read()
@@ -205,7 +214,7 @@ async def get_timestamps():
 
     return timestamp_list
 
-
+# Uploads webcam recording
 @app.post("/uploadrecording/")
 async def upload_recording(file: UploadFile = File(...)):
     current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -224,11 +233,8 @@ async def upload_recording(file: UploadFile = File(...)):
     # Process the mp4 file
     #audio_path = process_video(mp4_path)
     #transcript = process_audio(audio_path)
-    return {"filename": file.filename}
-
-#, "transcript": transcript}
-
-#, "transcript": transcript}
+    get_timestamps(file.filename)
+    return {"filename": file.filename}#, "transcript": transcript}
     #current_dir = os.path.dirname(os.path.realpath(__file__))
     #video_path = os.path.join(current_dir, "recording", file.filename)
     #with open(video_path, "wb") as buffer:
@@ -237,7 +243,7 @@ async def upload_recording(file: UploadFile = File(...)):
     #transcript = process_audio(audio_path)
     #return {"filename": file.filename, "transcript": transcript}
 
-openai.api_key = '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'
+openai.api_key = 'sk-VkruRhbsDhZTJ8NgFM4YT3BlbkFJvzysIPK8GlZC9Qj8XQXt0'
 
 @app.get("/generate_questions")
 async def generate_questions():
@@ -264,10 +270,10 @@ async def generate_questions():
 async def validate_answer(question: str = Body(...), answer: str = Body(...)):
     prompt = f"{question}\nAnswer: {answer}\nIs this answer correct?"
     response = openai.ChatCompletion.create(
-      engine="gpt-4-0613",
+      model="gpt-4-0613",
       messages=[
             {"role": "system", "content": "You are a knowledgable scholar."},
-            {"role": "user", "content": f"\n\nIs this answer correct?\n{prompt}"},
+            {"role": "user", "content": f"\n\nIs this answer correct? Give me additional information of this topic to help me understand it more!\n{prompt}"},
         ],
     )
     
