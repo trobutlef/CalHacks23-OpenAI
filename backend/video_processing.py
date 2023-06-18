@@ -1,3 +1,5 @@
+#import os
+#os.environ["IMAGEIO_FFMPEG_EXE"] = "/usr/bin/ffmpeg"
 from moviepy.editor import VideoFileClip
 
 def process_video(video_path):

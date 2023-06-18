@@ -17,12 +17,12 @@ function Upload() {
     }
 
     const formData = new FormData();
-    formData.append("audio", file);
+    formData.append("video", file);
     console.log(formData, file);
     const headers = { "Content-Type": "multipart/form-data" };
     // Replace with your backend API endpoint
     await axios
-      .post("http://localhost:8000/uploadaudio", formData, { headers: headers })
+      .post("http://localhost:8000/uploadvideo", formData, { headers: headers })
       .then((response) => {
         console.log(response); // Here you get the response from your backend
       })
