@@ -36,20 +36,8 @@ There are people who are trying to access these services.
 So there is one big problem.
 
 6
-00:00:20,880 --> 00:00:31,080
-If you want to serve that many people at the same time with one service, you probably need
-
-7
-00:00:31,080 --> 00:00:32,660
-a bigger service.
-
-8
-00:00:32,660 --> 00:00:38,580
-And if you want to serve that many people at the same time with one service, you probably
-
-9
-00:00:38,580 --> 00:00:40,980
-need a bigger service.
+00:00:20,880 --> 00:00:36,920
+If you want to serve that many people at the same time with one service, you have to have
 
 
 1
@@ -66,7 +54,7 @@ on the internet and we get lots of requests coming in like this. This could be l
 
 4
 00:00:22,160 --> 00:00:29,160
-and millions of requests.
+and millions of requests or millions of requests over the internet but a smartphone a desktop
 
 
 1
@@ -145,8 +133,8 @@ of these computers stops working what's gonna happen is all these other ones
 automatically will find out that this computer is not active anymore so they
 
 5
-00:00:23,140 --> 00:00:31,020
-handle that question
+00:00:23,140 --> 00:00:32,820
+handle that particular request
 
 
 1

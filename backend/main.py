@@ -14,7 +14,7 @@ app = FastAPI()
 # CORS middleware settings
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
@@ -36,7 +36,7 @@ async def upload_video(file: UploadFile = File(...)):
     last_uploaded_filename = file.filename  # Update last uploaded file name
     return {"filename": file.filename, "transcript": transcript}
 
-@app.get("/uploadvideo/")  # Add a get endpoint for uploadvideo
+@app.get("/getuploadedvideo/")  # Add a get endpoint for uploadvideo
 async def get_upload_video():
     global last_uploaded_filename
     return {"filename": last_uploaded_filename}
