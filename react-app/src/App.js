@@ -1,20 +1,14 @@
-import React from "react";
-import "./AppStyles.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Cards from "./components/Cards";
-import Upload from "./Upload";
-import "./App.css";
+import React from 'react';
+import VideoUpload from './VideoUpload';
+import VideoPlayer from './VideoPlayer';
 
-export default function App() {
+function App() {
   return (
-    /*<div>
-      <Cards />
-    </div>*/
     <div className="App">
-      <header className="App-header">
-        {<h1>OpenAI video transcription analysis</h1>}
-        <Upload />
-      </header>
+      <VideoUpload />
+      <VideoPlayer />
     </div>
   );
 }
+
+export default App;
