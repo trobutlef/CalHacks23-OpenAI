@@ -9,7 +9,7 @@ import os
 #openai.api_key = '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'
 #load_dotenv()
 #OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-openai.api_key = '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'#'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'
+openai.api_key = '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'#'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'
 
 # Get the current directory path
 current_directory = os.getcwd()

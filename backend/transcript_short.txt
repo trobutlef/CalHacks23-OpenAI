@@ -15,5 +15,5 @@ And these services get a lot of requests all over the world.
 There are people who are trying to access these services.
 0:00:40:
 So there is one big problem.
-0:00:50:
-If you want to serve that many people at the same time with one service, you're going to
+0:00:52:
+If you want to serve that many people at the same time with one service, you have to have

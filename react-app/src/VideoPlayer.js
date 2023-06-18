@@ -23,7 +23,7 @@ const TranscriptionBox = styled(Box)({
   whiteSpace: "pre-wrap",
 });
 
-function VideoPlayer() {
+function VideoPlayer({ uploadCounter }) {
   const [videoSrc, setVideoSrc] = useState(null);
   const { status, startRecording, stopRecording, mediaBlobUrl } =
     useReactMediaRecorder({ video: true, mimeType: "video/webm" });
@@ -38,7 +38,7 @@ function VideoPlayer() {
       }
     });
     console.log("videoSrc:", videoSrc);
-  }, []);
+  }, [uploadCounter]); // Add uploadCounter dependency
 
   const handlePlay = () => {
     startRecording();
