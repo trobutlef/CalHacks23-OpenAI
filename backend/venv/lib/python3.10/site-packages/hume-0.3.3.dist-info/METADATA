@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: hume
+Version: 0.3.3
+Summary: Hume AI Python Client
+Home-page: https://github.com/HumeAI/hume-python-sdk
+License: Proprietary
+Keywords: hume,expressive,communication,audio,recognition,ai,analysis,detection,voice,sentiment,emotion
+Author: Hume AI Dev
+Author-email: dev@hume.ai
+Requires-Python: >=3.8.1,<4
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Provides-Extra: examples
+Provides-Extra: stream
+Requires-Dist: jupyter (>=1.0.0,<2.0.0) ; extra == "examples"
+Requires-Dist: pydub (>=0.25.1,<0.26.0) ; extra == "examples"
+Requires-Dist: requests (>=2.28.2,<3.0.0)
+Requires-Dist: typing-extensions (>=4.3.0,<5.0.0)
+Requires-Dist: websockets (>=10.3,<11.0) ; extra == "stream"
+Project-URL: Repository, https://github.com/HumeAI/hume-python-sdk
+Description-Content-Type: text/markdown
+
+<div align="center">
+  <img src="https://storage.googleapis.com/hume-public-logos/hume/hume-banner.png">
+  <h1>Hume AI Python SDK</h1>
+
+  <p>
+    <strong>Integrate Hume APIs directly into your Python application</strong>
+  </p>
+
+  <br>
+  <div>
+    <a href="https://humeai.github.io/hume-python-sdk"><img src="https://img.shields.io/badge/docs-mkdocs-blue" alt="Docs"></a>
+    <a href="https://pepy.tech/project/hume"><img src="https://pepy.tech/badge/hume" alt="Downloads"></a>
+    <a href="https://pypi.org/project/hume"><img src="https://img.shields.io/pypi/v/hume?logo=python&logoColor=%23cccccc" alt="PyPI"></a>
+    <a href="https://github.com/HumeAI/hume-python-sdk/actions/workflows/ci.yml"><img src="https://github.com/HumeAI/hume-python-sdk/actions/workflows/ci.yaml/badge.svg" alt="CI"></a>
+  </div>
+  <br>
+</div>
+
+To get started, [sign up for a Hume account](https://share.hsforms.com/1lVY-gpw0RTaWCeu7ZTkH-wcjsur)!
+
+> We're in private beta right now, but we'll be continuously rolling out access to developers and organizations on our waitlist.
+
+> **Note**
+> Our current version is not yet considered a stable release. As we are still in the development phase, we have chosen to continue releasing under the 0 major release until we are ready to launch version 1.0.0. Our APIs might undergo breaking changes that are necessary for us to improve our tooling and ensure a more stable and reliable release in the future. We encourage you to keep up with our [API changelog](https://docs.hume.ai/changes) and mailing list to stay up to date with the latest changes.
+
+## Usage & Documentation
+
+Example notebooks can be found in the [examples folder](./examples/README.md).
+
+For complete documentation check out the [docs site](https://humeai.github.io/hume-python-sdk/).
+
+## Other Resources
+
+- [Hume AI Homepage](https://hume.ai)
+- [Platform Documentation](https://help.hume.ai/basics/about-hume-ai)
+- [API Reference](https://docs.hume.ai)
+
+## Citations
+
+Hume's expressive communication platform has been built on top of published scientific research. If you use this SDK in your work please see [CITATIONS.md](CITATIONS.md) for the best way to reference that research.
+
+## Support
+
+If you've found a bug with this SDK please [open an issue](https://github.com/HumeAI/hume-python-sdk/issues/new)!
+

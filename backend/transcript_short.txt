@@ -1,0 +1,19 @@
+
+0:00:00:
+Hi, Hooman's here and welcome to another episode of Fast Tech Skills. In this video, we're going to
+0:00:07:
+have a look at distributed systems. This is a very important approach to the modern computing
+0:00:13:
+and I'm going to explain in a second why it's critical to the modern web and the services that
+0:00:20:
+we use on a day-to-day basis. So if you've ever used Facebook or Google or any of these services,
+0:00:29:
+They are like very large scale services.
+0:00:33:
+And these services get a lot of requests all over the world.
+0:00:37:
+There are people who are trying to access these services.
+0:00:40:
+So there is one big problem.
+0:00:52:
+If you want to serve that many people at the same time with one service, you have to have
