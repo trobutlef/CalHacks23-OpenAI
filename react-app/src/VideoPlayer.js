@@ -1,9 +1,16 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Webcam from 'react-webcam';
 
 function VideoPlayer() {
   const webcamRef = useRef(null);
   const [recording, setRecording] = useState(false);
+  const [videoSrc, setVideoSrc] = useState(null);
+
+  useEffect(() => {
+    // Replace this with the URL of your backend endpoint that serves the video file
+    const videoUrl = 'http://localhost:8000/videos/Distributed Systems - Fast Tech Skills.mp4';
+    setVideoSrc(videoUrl);
+  }, []);
 
   const handlePlay = () => {
     webcamRef.current.startRecording();
@@ -23,7 +30,7 @@ function VideoPlayer() {
   return (
     <div>
       <Webcam audio={false} ref={webcamRef} />
-      <video src="../../backend/videos/Distributed Systems - Fast Tech Skills.mp4" onPlay={handlePlay} onPause={handlePause} controls />
+      {videoSrc && <video src={videoSrc} onPlay={handlePlay} onPause={handlePause} controls />}
     </div>
   );
 }
