@@ -6,7 +6,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from video_processing import process_video
 from audio_processing import process_audio
 
+from hume import HumeBatchClient
+from hume.models.config import FaceConfig
+
+from datetime import timedelta
+
 import os
+import json
+import credentials
+
+import itertools
+
+import re
 import ffmpeg
 
 app = FastAPI()
@@ -40,6 +51,155 @@ async def upload_video(file: UploadFile = File(...)):
 async def get_upload_video():
     global last_uploaded_filename
     return {"filename": last_uploaded_filename}
+@app.post("/getTimestamps/")
+async def get_timestamps():
+
+    print("getting timestamps...")
+
+    # call Hume's Facial Recognition API with a local video file, to get a json file downloaded
+    '''
+    client = HumeBatchClient(credentials.HUME_API_KEY)
+    urls = []
+    config = FaceConfig()
+    job = client.submit_job(urls, [config], files=["/Users/zztee/CalHacks23-OpenAI/backend/videos/hume_test.mov"])
+
+    print(job)
+    print("Running...")
+
+    details = job.await_complete()
+    job.download_predictions("predictions.json")
+    print("Predictions downloaded to predictions.json")
+
+    '''
+    # read downloaded JSON file
+    with open('predictions.json') as user_file:
+        hume_json = user_file.read()
+
+    # transform JSON into Python object
+    a_list = json.loads(hume_json)
+
+    print("a_list created")
+
+    # Parse to get inner JSONs that we need to filter through
+    b_list = a_list[0]["results"]["predictions"][0]["models"]["face"]["grouped_predictions"][0]["predictions"]
+
+    print("b_list created!")
+
+    # Filtering through to get relevant frames based on emotion name and score:
+
+    def filter_func(predictions_json):
+        result = False 
+
+        for i in range(len(predictions_json["emotions"])):
+            if predictions_json["emotions"][i]["name"] in ["Anxiety","Confusion","Disappointment","Distress","Doubt","Surprise (negative)"] and predictions_json["emotions"][i]["score"] >= 0.8:
+                result = True
+        
+        return result
+
+    filtered_list = list(
+        filter(
+            filter_func,
+            # lambda dictionary: (dictionary['emotions']['name'] in ["Anxiety","Confusion","Disappointment","Distress","Doubt","Surprise (negative)"] and dictionary['emotions']['score'] > 0.8),
+            b_list
+        )
+    )
+    # filtered_list is a list of JSON objects for each corresponding frame
+
+    timestamp_list = []
+
+    for obj in filtered_list:
+        timestamp_list.append(obj["time"])
+
+    print("timestamp_list: ", timestamp_list)
+
+    # Get transcript
+    with open("transcript.txt") as file:
+        data = file.read().split('\n')
+
+    # Filter out random integers and blank spaces:
+    data[:] = [x for x in data if (x != '' and len(x)>10)]
+
+    # Split into timestamps and content:
+    t1,t2 = itertools.tee(data)
+    even = itertools.islice(t1,0,None,2)
+    odd = itertools.islice(t2,1,None,2)
+    timestamps = list(even)
+    content = list(odd)
+    # Handle weird exception:
+    last_timestamps = timestamps.pop()
+    last_content = content.pop()
+    content.append(last_timestamps)
+    timestamps.append(last_content)
+
+    print("list of timestamps: ", timestamps)
+
+    print("list of content: ", content)
+
+    # regex pattern for transcript's timestamps:
+    pattern = r'(\d{2}:\d{2}:\d{2},\d{3})\s-->\s(\d{2}:\d{2}:\d{2},\d{3})'
+
+    # start of timestamps''00:00:00,000'
+    init_timestr = re.search(pattern, timestamps[0]).group(1)[:-4]
+    h, m, s = init_timestr.split(':')
+    init_timesec = int(h) * 3600 + int(m) * 60 + int(s)
+    timestamps_edited = [init_timesec]
+
+    # Convert timestamps into seconds
+    for i in range(1,len(timestamps)):
+        match = re.search(pattern, timestamps[i])
+
+        start_time = match.group(1)[:-4]
+        sh, sm, ss = start_time.split(':')
+        start_timesec = int(sh) * 3600 + int(sm) * 60 + int(ss)
+        
+        end_time = match.group(2)[:-4]
+        eh, em, es = end_time.split(':')
+        end_timesec = int(eh) * 3600 + int(em) * 60 + int(es)
+
+        time_diffsec = end_timesec - start_timesec
+
+        prev_time = timestamps_edited[i-1]
+        timestamps_edited.append(time_diffsec+ prev_time)
+
+    print(timestamps_edited)
+
+    # Combine timestamps list and content list into a dictionary:
+    initial_dict = dict(zip(timestamps_edited, content))
+
+    print(initial_dict)
+
+    # Get final dictionary for shortened transcript:
+    result_dict = {}
+    for time in timestamp_list:
+        go_on = True
+        i=0
+        while go_on:
+            keys = list(initial_dict.keys())
+            if time >= keys[i]:
+                i+=1
+
+            else:
+                result_dict[keys[i-1]] = initial_dict[keys[i-1]]
+                result_dict[keys[i]] = initial_dict[keys[i]]
+                result_dict[keys[i+1]] = initial_dict[keys[i+1]]
+                go_on = False
+
+    print(result_dict)
+
+    # Write to a txt file and save it
+    with open('transcript_short.txt', 'w') as f:
+        for key, value in result_dict.items():
+            # create timedelta and convert it into string
+            td_str = str(timedelta(seconds=key)) + ":"
+            f.write('\n')
+            f.write(td_str)
+            f.write('\n')
+            f.write(value)
+    
+    f.close()
+
+    return timestamp_list
+
 
 @app.post("/uploadrecording/")
 async def upload_recording(file: UploadFile = File(...)):

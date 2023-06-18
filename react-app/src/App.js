@@ -1,6 +1,7 @@
 import React from "react";
 import VideoUpload from "./VideoUpload";
 import VideoPlayer from "./VideoPlayer";
+import GetTimeStamps from "./GetTimeStamps";
 import {
   Box,
   Container,
@@ -29,6 +30,9 @@ function App() {
           <Grid container spacing={4} direction="column" alignItems="center">
             <Grid item xs={12} sm={8}>
               <VideoUpload />
+            </Grid>
+            <Grid item xs={12} sm={8}>
+              <GetTimeStamps />
             </Grid>
           </Grid>
         </Box>
