@@ -2,14 +2,14 @@ import openai
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 import os
-#   import credentials
+import credentials
 
 #from dotenv import load_dotenv
 
 #openai.api_key = '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'
 #load_dotenv()
 #OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-openai.api_key = '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'#'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'
+openai.api_key = credentials.OPENAI_API_KEY
 
 # Get the current directory path
 current_directory = os.getcwd()

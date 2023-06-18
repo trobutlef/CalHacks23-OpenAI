@@ -51,6 +51,8 @@ async def upload_video(file: UploadFile = File(...)):
 async def get_upload_video():
     global last_uploaded_filename
     return {"filename": last_uploaded_filename}
+
+
 @app.post("/getTimestamps/")
 async def get_timestamps():
 
@@ -200,7 +202,7 @@ async def get_timestamps():
 
     return timestamp_list
 
-
+# Uploads webcam recording
 @app.post("/uploadrecording/")
 async def upload_recording(file: UploadFile = File(...)):
     current_dir = os.path.dirname(os.path.realpath(__file__))
