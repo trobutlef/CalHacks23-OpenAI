@@ -29,6 +29,7 @@ const TranscriptionBox = styled(Box)({
 
 function VideoUpload() {
   const [transcription, setTranscription] = useState(null);
+  const [uploadCounter, setUploadCounter] = useState(0);
 
   const uploadVideo = (event) => {
     const file = event.target.files[0];
@@ -41,7 +42,8 @@ function VideoUpload() {
       })
       .then((response) => {
         console.log(response);
-        setTranscription(response.data.transcript); // Assuming transcript is returned in response data
+        setTranscription(response.data.transcript);
+        setUploadCounter(uploadCounter + 1); // Increment the uploadCounter state
       })
       .catch((error) => {
         console.error("Error uploading file: ", error);
@@ -68,7 +70,7 @@ function VideoUpload() {
       </label>
 
       <Grid item xs={12} sm={8}>
-        <VideoPlayer />
+        <VideoPlayer uploadCounter={uploadCounter} />
       </Grid>
 
       <Typography variant="subtitle1">Transcription:</Typography>
