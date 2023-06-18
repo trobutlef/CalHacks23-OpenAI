@@ -36,20 +36,12 @@ There are people who are trying to access these services.
 So there is one big problem.
 
 6
-00:00:20,880 --> 00:00:30,360
-If you want to serve that many people at the same time with one service, you have to have
+00:00:20,880 --> 00:00:30,420
+If you want to serve that many people at the same time with one service, you're going to
 
 7
-00:00:30,360 --> 00:00:33,000
-a lot of people.
-
-8
-00:00:33,000 --> 00:00:42,040
-And if you want to serve that many people at the same time with one service, you have
-
-9
-00:00:42,040 --> 00:00:44,960
-to have a lot of people.
+00:00:30,420 --> 00:00:35,260
+have to have a lot of people.
 
 
 1
@@ -66,7 +58,7 @@ on the internet and we get lots of requests coming in like this. This could be l
 
 4
 00:00:22,160 --> 00:00:29,160
-and millions of requests. This could be like hundreds of thousands of requests.
+and millions of requests. So it's not possible to build a computer that can serve everyone
 
 
 1
@@ -146,7 +138,7 @@ automatically will find out that this computer is not active anymore so they
 
 5
 00:00:23,140 --> 00:00:30,120
-handle that data
+handle that the...
 
 
 1

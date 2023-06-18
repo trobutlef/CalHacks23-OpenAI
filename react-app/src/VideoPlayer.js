@@ -1,36 +1,47 @@
-import React, { useRef, useState, useEffect } from 'react';
-import Webcam from 'react-webcam';
+import React, { useState, useEffect } from "react";
+import { useReactMediaRecorder } from "react-media-recorder";
+import axios from "axios";
 
 function VideoPlayer() {
-  const webcamRef = useRef(null);
-  const [recording, setRecording] = useState(false);
   const [videoSrc, setVideoSrc] = useState(null);
+  const { status, startRecording, stopRecording, mediaBlobUrl } =
+    useReactMediaRecorder({ video: true, mimeType: "video/webm" }); // Ensure the mimeType is set to mp4
 
   useEffect(() => {
-    // Replace this with the URL of your backend endpoint that serves the video file
-    const videoUrl = 'http://localhost:8000/videos/Distributed Systems - Fast Tech Skills.mp4';
+    const videoUrl =
+      "http://localhost:8000/videos/Distributed Systems - Fast Tech Skills.mp4";
     setVideoSrc(videoUrl);
   }, []);
 
   const handlePlay = () => {
-    webcamRef.current.startRecording();
-    setRecording(true);
+    startRecording();
   };
 
-  const handlePause = () => {
-    webcamRef.current.stopRecording();
-    setRecording(false);
-    const videoBlob = webcamRef.current.getRecording();
-    console.log(videoBlob);
-    // Can send the videoBlob to your backend for further processing
+  const handlePause = async () => {
+    stopRecording();
+    // Now we want to send the videoBlob to the backend
+    let blob = await fetch(mediaBlobUrl).then((r) => r.blob());
+
+    // Use form data to build up the file
+    let data = new FormData();
+    data.append("file", blob, "recording.webm");
+
+    axios
+      .post("http://localhost:8000/uploadrecording/", data)
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
   };
 
-  console.log(webcamRef);
+  console.log(status, mediaBlobUrl);
 
   return (
     <div>
-      <Webcam audio={false} ref={webcamRef} />
-      {videoSrc && <video src={videoSrc} onPlay={handlePlay} onPause={handlePause} controls />}
+      <video
+        src={videoSrc}
+        onPlay={handlePlay}
+        onPause={handlePause}
+        controls
+      />
     </div>
   );
 }
