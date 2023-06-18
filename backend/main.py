@@ -1,13 +1,16 @@
 from fastapi import FastAPI, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 
 from video_processing import process_video
 from audio_processing import process_audio
 
 import os
 
+import credentials
+
 app = FastAPI()
-<<<<<<< HEAD
-OPENAI_API_KEY = os.getenv("isk-O0pMhXMushdl6VZ4OqpLT3BlbkFJNIhHxeivBY1qakf2DwiF")  # your OpenAI API Key
+
+OPENAI_API_KEY = os.getenv(credentials.OPENAI_API_KEY)  # your OpenAI API Key
 
 origins = [
     "http://localhost:3000",  # React app address
@@ -21,27 +24,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-<<<<<<< HEAD
-@app.post("/uploadvideo")
-async def upload_video(video: UploadFile):
-
-    print(video.filename)
-
-    # CONVERT VIDEO TO AUDIO:
-    my_clip = mp.VideoFileClip(video)
-    my_clip.audio.write_audiofile(r"video_transcript.wav")
-
-    # LOCATE SAVED AUDIO
-
-    # USE WHISPER TO GET TRANSCRIPT OF AUDIO
-
-    # SAVE TRANSCRIPT
-    
-    return {"filename": video.filename}
-'''
-@app.post("/transcribe/")
-async def transcribe_audio(audio: UploadFile = File(...)):
-=======
 # @app.post("/uploadaudio")
 # async def upload_audio(audio: UploadFile = File(...)):
 #     # Get the filename before converting to an AudioSegment
@@ -103,7 +85,6 @@ async def upload_audio(audio: UploadFile = File(...)):
     # Get the filename before converting to an AudioSegment
     filename = audio.filename
 
->>>>>>> ad985c826a742fdc789ea96b6258ff3a6c947100
     # read the uploaded file
     audio_bytes = await audio.read()
 
@@ -149,14 +130,7 @@ async def upload_audio(audio: UploadFile = File(...)):
         # Get the response data as JSON
         result = await response.json()
 
-<<<<<<< HEAD
-    return {"transcription": result}
-'''
-
-=======
     return {"filename": filename, "transcription": result}
->>>>>>> ad985c826a742fdc789ea96b6258ff3a6c947100
-=======
 
 @app.post("/uploadvideo/")
 async def upload_video(file: UploadFile = File(...)):
@@ -167,4 +141,3 @@ async def upload_video(file: UploadFile = File(...)):
     audio_path = process_video(video_path)
     transcript = process_audio(audio_path)
     return {"filename": file.filename, "transcript": transcript}
->>>>>>> 6197ddafc8c63311237c4cca7c181ec981abd6e5
